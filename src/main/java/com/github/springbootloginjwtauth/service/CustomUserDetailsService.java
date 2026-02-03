@@ -1,6 +1,6 @@
 package com.github.springbootloginjwtauth.service;
 
-import org.springframework.security.core.userdetails.User;
+import com.github.springbootloginjwtauth.repositotry.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+    private UserRepository userRepository;
+
+    public CustomUserDetailsService(UserRepository userRepository)
     {
-        return User.builder()
-                .username("user")
-                .password("$2a$12$5scRLv1VTkkjMKWjgdV1vuzt.PJvuJdi.k0p2BVg/wkh/04mZgYA2")
-                .build();
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findCustomUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
