@@ -20,7 +20,9 @@ public class CustomUser implements UserDetails // Springboot UserDetails Interfa
     private Long id;
 
     // Object Attributes ( log in info )
+    @Column(unique = true)
     private String username;
+
     private String password;
 
 
@@ -32,5 +34,5 @@ public class CustomUser implements UserDetails // Springboot UserDetails Interfa
     public String getUsername() { return username; }
 
     @Override
-    public String getPassword() { return password; }
+    public @Nullable String getPassword() { return password; }
 }
